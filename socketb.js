@@ -132,6 +132,11 @@ export class Socketb {
     }
 
     async writeLoop() {
+        if (this.sock == null) {
+            console.log("Socketb writeLoop error, sock is null");
+            return;
+        }
+
         let writer = null;
 
         try {
@@ -159,8 +164,22 @@ export class Socketb {
         }
     }
 
-    shutdownWrite() {
-        // TODO: call writable stream's shutdown method
+    async shutdownWrite() {
+        if (!this.isConnected()) {
+            console.log("Socketb shutdownWrite error, Socketb isn't connected state");
+            return;
+        }
+
+        if (this.sock == null) {
+            console.log("Socketb shutdownWrite error, sock is null");
+            return;
+        }
+
+        try {
+            await this.sock.writable.close();
+        } catch (err) {
+            console.log("Socketb shutdownWrite exception:" + err);
+        }
     }
 
     close() {
