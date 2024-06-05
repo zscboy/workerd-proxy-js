@@ -167,7 +167,7 @@ export class Tunnel {
             this.websocket.close();
             this.websocket = null;
         } catch (err) {
-            console.log("tunnel onClosed exception:", err);
+            console.log("tunnel close exception:", err);
         }
     }
 
@@ -195,9 +195,9 @@ export class Tunnel {
         let thisObj = this;
         let promise = new Promise((resolve, reject) => {
             let sendBuf = {
-                "buf": buf,
-                "resolve": resolve,
-                "reject": reject,
+                buf: buf,
+                resolve: resolve,
+                reject: reject,
             };
             thisObj.pushSendRequest(sendBuf);
         });
@@ -241,7 +241,7 @@ export class Tunnel {
 
     callSendBufResolve(sendBuf) {
         try {
-            sendBuf.resolve.resolve();
+            sendBuf.resolve();
         } catch (err) {
             console.log("Tunnel.callSendBufResolve, resolve exception:", err);
         }
@@ -301,6 +301,7 @@ export class Tunnel {
             default:
                 console.log("Tunnel.onRequestMessage, unknown cmd :", cmd,
                     ", tunnel id:", this.id, ", idx:", idx, ", tag:", tag);
+                break;
         }
     }
 
