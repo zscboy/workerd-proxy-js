@@ -81,6 +81,10 @@ export class Request {
      * @param {*} data data body
      */
     onServerData(data) {
+        if (!this.inUsed) {
+            return;
+        }
+
         this.tunnel.onReqServerData(this, data);
     }
 
@@ -88,6 +92,10 @@ export class Request {
      * handle our socket's close event.
      */
     onServerClosed() {
+        if (!this.inUsed) {
+            return;
+        }
+
         this.tunnel.onReqServerClosed(this);
     }
 }

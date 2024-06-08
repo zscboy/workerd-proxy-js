@@ -1,5 +1,4 @@
 import { Request } from "./request.js";
-import { Socketb } from "./socketb.js";
 
 /**
  * ReqMgr class:
@@ -65,12 +64,12 @@ export class ReqMgr {
             return;
         }
 
-        // call free() of request object to close socket and release underlying resource
-        req.free()
-
         // reset tag
         req.tag++
         req.isUsed = false
+
+        // call free() of request object to close socket and release underlying resource
+        req.free()
     }
 
     /**
@@ -106,6 +105,10 @@ export class ReqMgr {
         for (let i = 0; i < this.cap; i++) {
             let req = this.reqq[i];
             if (req.inUsed) {
+                // reset tag
+                req.tag++
+                req.isUsed = false
+
                 req.free();
             }
         }
