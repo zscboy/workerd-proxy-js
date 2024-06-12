@@ -9,7 +9,7 @@ export class Request {
         this.tag = tag;
         this.tunnel = tunnel;
         this.inUsed = false;
-
+        this.idx = tag;
         this.socketb = null;
     }
 

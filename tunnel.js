@@ -65,6 +65,7 @@ export class Tunnel {
 
         let errorHandler = evt => {
             console.log('errorHandler, id:', this.id);
+            this.onClosed();
             // 'close' event will emit later
         };
 
@@ -394,7 +395,7 @@ export class Tunnel {
     }
 
     async onReqServerData(req, data) {
-        const arr = new ArrayBuffer(5 + len(data));
+        const arr = new ArrayBuffer(5 + data.length);
         let buf = Buffer.from(arr);
 
         buf.writeUInt8(CMD_ReqData, 0);

@@ -36,6 +36,7 @@ export class ReqMgr {
         }
 
         req.tag = tag
+        req.idx = idx
         req.isUsed = true
 
         return req;

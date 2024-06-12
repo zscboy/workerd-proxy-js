@@ -128,7 +128,7 @@ export class Socketb {
             return;
         }
 
-        writeLoop();
+        this.writeLoop();
     }
 
     async writeLoop() {
