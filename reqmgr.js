@@ -37,7 +37,7 @@ export class ReqMgr {
 
         req.tag = tag
         req.idx = idx
-        req.isUsed = true
+        req.inUsed = true
 
         return req;
     }
@@ -55,7 +55,7 @@ export class ReqMgr {
         }
 
         let req = this.reqq[idx];
-        if (!req.isUsed) {
+        if (!req.inUsed) {
             console.log("reqmgr.free request is not in used, idx:", idx);
             return;
         }
@@ -67,7 +67,7 @@ export class ReqMgr {
 
         // reset tag
         req.tag++
-        req.isUsed = false
+        req.inUsed = false
 
         // call free() of request object to close socket and release underlying resource
         req.free()
@@ -86,7 +86,7 @@ export class ReqMgr {
         }
 
         let req = this.reqq[idx];
-        if (!req.isUsed) {
+        if (!req.inUsed) {
             console.log("reqmgr.get request is not in used, idx:", idx);
             return null;
         }
@@ -108,7 +108,7 @@ export class ReqMgr {
             if (req.inUsed) {
                 // reset tag
                 req.tag++
-                req.isUsed = false
+                req.inUsed = false
 
                 req.free();
             }
