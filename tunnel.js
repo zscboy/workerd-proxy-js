@@ -417,7 +417,7 @@ export class Tunnel {
 
         await this.send(buf);
 
-        this.reqMgr.free(idx, tag);
+        this.reqMgr.free(req.idx, req.tag);
     }
 
     async onReqServerFinished(req) {
@@ -430,6 +430,6 @@ export class Tunnel {
 
         await this.send(buf);
 
-        this.reqMgr.free(idx, tag);
+        this.reqMgr.free(req.idx, req.tag);
     }
 }
