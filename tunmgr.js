@@ -51,7 +51,8 @@ export default {
         case "tun":
           // This is a request for `/api/...`, call the API handler.
           return handleTunRequest(request, env);
-
+        case "trace":
+          return handleTrace(request, env);
         default:
           return new Response("Not found", { status: 404 });
       }
@@ -74,6 +75,36 @@ async function handleTunRequest(request, env) {
   // same signature as the global `fetch()` function, but the request is always sent to the
   // object, regardless of the request's URL.
   return tunmgr.fetch(request);
+}
+
+async function handleTrace(request, env) {
+  let newHeaders = resetHeaders(request);
+    return new Response("OK", {status: 200, headers: newHeaders});
+}
+
+function resetHeaders(request) {
+ const headerRequestNodes = 'Request-Nodes';
+ const headerRequestNodesTimestamps = 'Request-Nodes-Timestamps';
+ const headerUserTimestamp = 'User-Timestamp';
+ 
+ let newHeaders = new Headers();
+ 
+ const headers = request.headers
+ if (headers.get(headerRequestNodes) !== null) {
+   newHeaders.set(headerRequestNodes, headers.get(headerRequestNodes))
+ }
+ 
+ if (headers.get(headerRequestNodesTimestamps) !== null) {
+   newHeaders.set(headerRequestNodesTimestamps, headers.get(headerRequestNodesTimestamps))
+ }
+ 
+ if (headers.get(headerUserTimestamp) !== null) {
+   newHeaders.set(headerUserTimestamp, headers.get(headerUserTimestamp))
+ }
+ 
+ const timestamp = new Date().toISOString();
+ newHeaders.set('Server-Timestamp', timestamp);
+   return newHeaders;
 }
 
 // =======================================================================================
@@ -133,9 +164,12 @@ export class TunMgr {
         }, KEEPALIVE_INTERVAL);
       }
 
+      let newHeaders = resetHeaders(request);
+
       return new Response(null, {
         status: 101,
         webSocket: client,
+        headers: newHeaders,
       });
     });
   }
